@@ -1,0 +1,54 @@
+#pragma once
+#include "Headers.h"
+#include "Settings.h"
+
+class FtpClient
+{
+public:
+	FtpClient() { Abort = false; }
+	~FtpClient() { CloseHandle(TransitEvent); }
+	// Установить идентификаторы контролов
+	void SetControls(HWND &hEditAdress, HWND &hEditUserName, HWND &hEditUserPassword, 
+		HWND &hButtonConnect, HWND &hButtonDownload, HWND &hButtonUpload,
+		HWND &hLocalListView, HWND &hFtpListView,
+		HWND &hComboBox, HWND &hStatusBar);
+	// Сортировка файлов
+	void FilesSort(vector<WIN32_FIND_DATA> &);
+	// Формирование информационной строки ошибки
+	void CheckLastError(DWORD code, char *szErrBuff);
+	// Функция коннекта
+	DWORD Connect(Settings &settings);
+	// Функция закрытия соединения
+	void Disconnect();
+	// Изменить локальное местоположение
+	DWORD LocalChangeDir(const char * szDirName);
+	// Показ содержимого локального каталога
+	DWORD LocalShowDir(vector<WIN32_FIND_DATA> &localList);
+	// Смена каталога на сервере
+	DWORD FtpChangeDir(const char * szDirName);
+	// Показ содержимого каталога фтп
+	DWORD FtpShowDir(vector<WIN32_FIND_DATA> &ftpList);
+	// Скачать
+	DWORD GetFile(LPCSTR ftpPath, LPCSTR localPath, HWND hProgBar, HWND hStatic);
+	// Закачать
+	DWORD FtpUpload(LPCSTR pathTo, LPCSTR pathFrom, WIN32_FIND_DATA file, HWND hProgBar, HWND hStatic);
+	// Преобразовать из UTF8 в CP1251
+	//string Utf8_to_cp1251(const char *str);
+	// Преобразовать из CP1251 в UTF8
+	//string cp1251_to_utf8(const char *str);
+	// Идентификаторы контролов
+	HWND hEditAdress, hEditUserName, hEditUserPassword, 
+		hButtonConnect, hButtonDownload, hButtonUpload,
+		hLocalListView, hFtpListView,
+		hComboBox, hStatusBar;
+	// Настройки
+	Settings settings;
+
+
+
+
+	// Событие скачивания/закачивания
+	HANDLE TransitEvent;
+	bool Abort;
+};
+

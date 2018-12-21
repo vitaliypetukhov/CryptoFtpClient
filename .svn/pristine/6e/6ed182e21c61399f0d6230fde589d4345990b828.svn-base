@@ -1,0 +1,60 @@
+#pragma once
+#include "Headers.h"
+#include "Settings.h"
+
+class FtpClient
+{
+public:
+	FtpClient()
+	{
+		memset(szLocalPath, 0, sizeof(TCHAR) * MAX_PATH);
+		memset(szFtpPath, 0, sizeof(TCHAR) * MAX_PATH);
+	}
+	~FtpClient() { CloseHandle(TransitEvent); }
+	// Установить идентификаторы контролов
+	void SetControls(HWND &hEditAdress, HWND &hEditUserName, HWND &hEditUserPassword, 
+		HWND &hButtonConnect, HWND &hButtonDownload, HWND &hButtonUpload,
+		HWND &hLocalListView, HWND &hFtpListView,
+		HWND &hComboBox, HWND &hStatusBar);
+	// Сортировка файлов
+	void FilesSort(vector<WIN32_FIND_DATA> &);
+	// Формирование информационной строки ошибки
+	void CheckLastError(DWORD code, char *szErrBuff);
+	// Функция коннекта
+	BOOL Connect(Settings &settings);
+	// Функция закрытия соединения
+	void Disconnect();
+	// Получить список файлов
+	DWORD LocalListDirectory(vector<WIN32_FIND_DATA> &ftpList, LPCSTR path);
+	// Показ содержимого локального каталога
+	void LocalShowDir(vector<WIN32_FIND_DATA> localList);
+	// Изменить локальное местоположение
+	DWORD LocalChangeDir(const char * szDirName);	
+	// Получить содержимое серверной директории
+	DWORD FtpListDirectory(vector<WIN32_FIND_DATA> &ftpList, LPCSTR path);
+	// Отображение текущего фтп каталога
+	void FtpShowDir(vector<WIN32_FIND_DATA> ftpList);
+	// Смена каталога на сервере
+	DWORD FtpChangeDir(const char * szDirName);	
+	// Принять
+	DWORD GetFile(LPCSTR ftpPath, LPCSTR localPath, HWND hProgBar, HWND hStatic);
+	// Отправить
+	DWORD PutFile(LPCSTR ftpPath, LPCSTR localPath, HWND hProgBar, HWND hStatic);
+	//// Преобразовать из UTF8 в CP1251
+	//string Utf8_to_cp1251(const char *str);
+	//// Преобразовать из CP1251 в UTF8
+	//string cp1251_to_utf8(const char *str);
+	// Идентификаторы контролов
+	HWND hEditAdress, hEditUserName, hEditUserPassword, 
+		hButtonConnect, hButtonDownload, hButtonUpload,
+		hLocalListView, hFtpListView,
+		hComboBox, hStatusBar;
+	// Настройки
+	Settings settings;
+	// Событие отправки/получения файла
+	HANDLE TransitEvent;
+	// Локальный и серверные пути текущего расположения
+	TCHAR szLocalPath[MAX_PATH];
+	TCHAR szFtpPath[MAX_PATH];
+	TCHAR szErrorBuff[1024];
+};

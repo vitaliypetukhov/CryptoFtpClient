@@ -1,0 +1,17 @@
+#pragma once
+
+#include "Headers.h"
+
+
+// Создание клиентского окна
+HWND ClientCreateWindow(HINSTANCE, WNDPROC, LPCSTR, LPCSTR, long, long);
+// Создание полей ввода
+BOOL ClientCreateEdits(HINSTANCE, HWND, HWND &, HWND &, HWND &);
+// Создание кнопок
+BOOL ClientCreateButtons(HINSTANCE, HWND, HWND &, HWND &, HWND &, HWND &, HWND &);
+// Создание списков
+BOOL ClientCreateListViews(HINSTANCE, HWND, HWND &, HWND &);
+// Статус бар
+BOOL ClientCreateStatusBar(HINSTANCE, HWND, int, int, HWND &);
+// Комбо бокс
+BOOL ClientCreateComboBox(HINSTANCE, HWND, HWND &);

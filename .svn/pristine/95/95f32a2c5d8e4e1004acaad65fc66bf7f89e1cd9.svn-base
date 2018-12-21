@@ -1,0 +1,33 @@
+#include "Headers.h"
+
+class Settings
+{
+public:
+	// Конструктор
+	Settings();
+	// Конструктор копии
+	Settings(const Settings&);
+	// Деструктор
+	~Settings();
+	// Загрузка настроек из файла конфигурации
+	BOOL Load();
+	// Сохранение настроек в файл конфигурации
+	BOOL Save();
+	// Установка настроек по умолчанию
+	void Default();
+	// Оператор присваивания
+	Settings &Settings::operator=(const Settings &href);
+	// Используемый порт
+	int connectionPort;
+	// Адрес сервера
+	string Adress;
+	// Логин
+	string Login;
+	// Пароль
+	string Password;
+	// Ключ
+	string Key;
+private:
+	// Путь к раположению настроек
+	char *cmdLine;	
+};
